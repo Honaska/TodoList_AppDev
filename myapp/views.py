@@ -61,3 +61,4 @@ def comment_detail(request, pk):
     elif request.method == 'DELETE':  # Deleting a comment
         comment.delete()
         return Response({'message': 'Comment deleted successfully'}, status=status.HTTP_204_NO_CONTENT)
+    
