@@ -27,7 +27,7 @@ SECRET_KEY = 'Secret_key_here'
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
 
-ALLOWED_HOSTS = ['https://todolist-appdev.onrender.com', '127.0.0.1', 'localhost']
+ALLOWED_HOSTS = ['todolist-appdev.onrender.com', '127.0.0.1', 'localhost']
 
 # Application definition
 
