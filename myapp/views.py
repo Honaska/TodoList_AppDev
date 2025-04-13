@@ -1,17 +1,17 @@
 from rest_framework.decorators import api_view, permission_classes, authentication_classes
 from rest_framework.response import Response
 from rest_framework import status
+from rest_framework.permissions import IsAuthenticated
 from django.shortcuts import get_object_or_404
-from rest_framework.permissions import AllowAny
 
 from .models import Post, Comment
 from .serializers import PostSerializer, CommentSerializer
-from .authetication  import SimpleTokenAuthentication  # Your custom token-based auth
+from .authetication import SimpleTokenAuthentication
 
 
 @api_view(['GET', 'POST'])
 @authentication_classes([SimpleTokenAuthentication])
-@permission_classes([AllowAny])  # No user auth needed, token only
+@permission_classes([IsAuthenticated])
 def post_list(request):
     if request.method == 'GET':
         posts = Post.objects.all()
@@ -27,7 +27,7 @@ def post_list(request):
 
 @api_view(['GET', 'POST'])
 @authentication_classes([SimpleTokenAuthentication])
-@permission_classes([AllowAny])
+@permission_classes([IsAuthenticated])
 def comment_list(request):
     if request.method == 'GET':
         comments = Comment.objects.all()
@@ -44,11 +44,8 @@ def comment_list(request):
 
 @api_view(['GET', 'PUT', 'DELETE'])
 @authentication_classes([SimpleTokenAuthentication])
-@permission_classes([AllowAny])
+@permission_classes([IsAuthenticated])
 def comment_detail(request, pk):
-    """
-    Retrieve, update or delete a comment instance by its primary key (id).
-    """
     comment = get_object_or_404(Comment, pk=pk)
 
     if request.method == 'GET':
@@ -56,7 +53,6 @@ def comment_detail(request, pk):
         return Response(serializer.data)
 
     elif request.method == 'PUT':
-        # In a token-only system, we don’t know the user — so skip ownership check
         serializer = CommentSerializer(comment, data=request.data)
         if serializer.is_valid():
             serializer.save()
